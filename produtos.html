@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de produtos</title>
+    <link rel="stylesheet" href="Style.css">
+
+</head>
+<body>
+    <div class="Box_main">
+        <h1>Tabela de produtos</h1>
+        <div>
+            <Table>
+                <thead>
+                    <tr class="cabeca">
+                        <td><h3>Medicamento</h3></td>
+                        <td><h3>Fabricante</h3></td>
+                        <td><h3>Valor(R$)</h3></td>
+                        <td><h3>Forma de Uso</h3></td>
+                        <td><h3>Ações</h3></td> </tr>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    </tbody>
+            </Table>
+            <script src="CarregarTabela.js"></script>
+            <div class="form-cadastro">
+                <h2>Cadastrar Novo Medicamento</h2>
+                <div class="forms">
+                    <input type="text" id="nome" placeholder="Nome do Medicamento">
+                    <input type="text" id="fabricante" placeholder="Fabricante">
+                    <input type="number" id="valor" placeholder="Valor (R$)">
+                    <input type="text" id="forma_uso" placeholder="Forma de Uso">
+                </div>
+                <button onclick="cadastrarRemedio()">Salvar Medicamento</button>
+
+            </div>
+            <div>
+                <a href="farmacia.html"><p>Página inicial</p></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
