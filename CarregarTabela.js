@@ -158,3 +158,4 @@ async function cadastrarRemedio() {
         console.error("Erro ao cadastrar:", error);
     }
 }
+
