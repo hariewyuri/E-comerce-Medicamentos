@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gluten:wght@100..900&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    overflow: hidden;
+}
+p {
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 30px;
+    text-align: center;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    text-align: center;
+    font-size: 50px;
+    background-color: #c20e1a;
+    color: #feed01;
+    border-radius: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+.auth-container{
+    position: absolute;
+    z-index: 1;
+}
+.banner-auth {
+    position: absolute;
+    z-index: 0;
+}
+.banner-auth img {
+    height: 100vh;
+}

@@ -2,7 +2,7 @@ async function carregarDados() {
     try {
         const response = await fetch('http://localhost:3000/api/produto');
         const produto = await response.json();
-        
+
         const container = document.querySelector('.body_products');
 
         produto.forEach(item => {
@@ -108,7 +108,7 @@ async function deletarRemedio(id) {
             const response = await fetch(`http://localhost:3000/api/medicamentos/${id}`, {
                 method: 'DELETE'
             });
-            
+
             if (response.ok) {
                 alert("Remédio excluído com sucesso!");
                 carregarDados(); // Recarrega a tabela sem precisar dar F5 na página inteira
@@ -151,7 +151,7 @@ async function cadastrarRemedio() {
             document.getElementById('fabricante').value = "";
             document.getElementById('valor').value = "";
             document.getElementById('forma_uso').value = "";
-            
+
             carregarDados(); // Atualiza a tabela na hora
         }
     } catch (error) {
