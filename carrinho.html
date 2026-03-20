@@ -1,11 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seu carrinho</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gluten:wght@100..900&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+        p {
+            text-align: center;
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        a {
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.8vi;
+        }
+
+        span {
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-size: 0.75vi;
+        }
+
+        body {
+            background-color: #c20e1a;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        h1 {
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            text-align: center;
+            font-size: 50px;
+            background-color: #c20e1a;
+            color: #feed01;
+            border-radius: 15px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+
+        }
+
+        input {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            font-size: 2vh;
+            height: 5vh;
+            width: 40vw;
+            min-width: 150px;
+            padding-left: 10px;
+        }
+
+        input:focus {
+            border-color: #cc0000;
+            box-shadow: 0 0 5px rgba(204, 0, 0, 0.3);
+        }
+
+        button {
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 25px;
+        }
+
+        button:hover {
+            background-color: #990000;
+        }
+
+        strong {
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            font-size: 0.85vi;
+            margin-right: 1vi;
+            margin-left: auto;
+        }
+
+        .head {
+            background-color: white;
+            width: 100%;
+            height: 11vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6vw;
+
+        }
+
+        .logo {
+            width: 5vw;
+        }
+
+        .body_products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2em;
+            margin: 50px;
+        }
+
+        .cart-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-cart-icon {
+            width: 5vw;
+            height: 5vh;
+            fill: #ff6500;
+            transition: transform 0.2s;
+        }
+
+        .nav-cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: 10px;
+            background-color: #cc0000;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 2px 6px;
+            min-width: 15px;
+            text-align: center;
+            border: 2px solid #fff;
+        }
+
+
+        /* Layout Principal */
+        .carrinho-main {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* Coluna Esquerda (Itens) */
+        .carrinho-itens-container {
+            flex: 3;
+            /* Ocupa 3 partes do espaço */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* O Card Achatado do Produto (Estilo Imagem 9) */
+        .cart_item_card {
+            display: flex;
+            /* Alinha os elementos horizontalmente */
+            align-items: center;
+            background: #fff;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            gap: 15px;
+        }
+
+        .cart_item_image {
+            width: 6vw;
+            object-fit: contain;
+        }
+
+        .cart_item_info {
+            flex: 2;
+            /* Ocupa o espaço central */
+        }
+
+        .cart_item_price {
+            flex: 1;
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            font-size: 1vi;
+            text-align: right;
+            color: #cc0000;
+            margin-right: 1vi;
+        }
+
+        /* Coluna Direita (Resumo Estilo Imagem 8) */
+        .carrinho-resumo-container {
+            flex: 1;
+            /* Ocupa 1 parte do espaço */
+        }
+
+        .resumo-card {
+            background: #fff;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            /* Fica fixo ao rolar a página */
+            top: 20px;
+        }
+
+        /* Botões de Ação */
+        .btn-continuar {
+            width: 100%;
+            background-color: #cc0000;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-weight: 800;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1vi;
+        }
+
+        .btn-voltar {
+            display: block;
+            text-align: center;
+            background-color: #fff;
+            color: #cc0000;
+            border: 2px solid #cc0000;
+            padding: 13px;
+            /* Compensando a borda */
+            font-weight: 800;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: none;
+            font-size: 1vi;
+        }
+
+        .resumo-total, .resumo-linha {
+            display: flex;
+        } #valor-produtos-resumo, #valor-frete-resumo {
+            margin-left: auto;
+        }
+    </style>
 </head>
-<body>
-    
+
+<body style="background-color: white;">
+    <header class="head" style="background-color: #c20e1a;">
+        <img class="logo"
+            src="https://www.drogariasultrapopular.com.br/wp-content/uploads/2019/05/UP_Facebook_post_1000x1000px_Logo-1.jpg"
+            alt="">
+        <div><input id="inputBusca" type="text" placeholder="Busque produtos"></div>
+        <div class="cart-container">
+            <a href="carrinho.html" class="cart-link">
+                <svg class="nav-cart-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z">
+                    </path>
+                </svg>
+                <span id="cart-count">0</span>
+            </a>
+        </div>
+        <div id="user-area" style="color: white;">
+            <a href="login.html" style="color: white;"><strong style="font-size: 0.75vi;">Faça login</strong></a><br><span style=>ou </span><a
+                href="Register.html" style="color: white;"><strong style="font-size: 0.75vi;">cadastre-se</strong></a>
+        </div>
+        <script src="Index.js"></script>
+    </header>
+    <div style="margin-top: 5vh;">
+        <main class="carrinho-main">
+            <section class="carrinho-itens-container" id="container-itens-carrinho">
+                <h2>Seu Carrinho</h2>
+            </section>
+
+            <aside class="carrinho-resumo-container">
+                <div class="resumo-card">
+                    <h3>Resumo do pedido</h3>
+                    <div class="resumo-linha">
+                        <span>Valor dos produtos:</span>
+                        <span id="valor-produtos-resumo">R$ 0,00</span>
+                    </div>
+                    <div class="resumo-linha">
+                        <span>Frete:</span>
+                        <span id="valor-frete-resumo">R$ 15,00</span>
+                    </div>
+                    <hr>
+                    <div class="resumo-total">
+                        <span>Total:</span>
+                        <strong id="valor-total-resumo" style="margin-right: 0;">R$ 0,00</strong>
+                    </div>
+
+                    <button class="btn-continuar">CONTINUAR</button>
+                    <a href="index.html" class="btn-voltar" style="margin-left: 0;">VOLTAR</a>
+                </div>
+            </aside>
+        </main>
+    </div>
+    <script src="carrinho.js"></script>
 </body>
+
 </html>

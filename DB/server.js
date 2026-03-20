@@ -13,7 +13,6 @@ app.use(express.json());
 
 const db = new sqlite3.Database('./E-comerce.db');
 
-
 // LER
 app.get('/api/produto', (req, res) => {
     db.all("SELECT * FROM produto", [], (err, rows) => {

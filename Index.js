@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     font-family: "Poppins", sans-serif;
                     font-weight: 500;
                     font-size: 14px;
-                    color: gray;
                     margin-left: 3vh;
                   }
             </style>
@@ -43,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('logout').addEventListener('click', () => {
             localStorage.removeItem('token_farmacia');
             localStorage.removeItem('nome_usuario');
+            localStorage.clear();
             window.location.reload();
         });
     }
