@@ -35,7 +35,7 @@ app.post('/api/cadastro', async (req, res) => {
     db.run(sql, [nome, email, senhaHash], (err) => {
         if (err) {
             console.error("ERRO NO SQLITE:", err.message);
-            
+
             if (err.message.includes("UNIQUE constraint failed")) {
                 return res.status(400).send("Este e-mail já está cadastrado.");
             }
@@ -62,6 +62,15 @@ app.post('/api/login', (req, res) => {
             token: token,
             nomeUsuario: usuario.nome
         });
+    });
+});
+
+app.get('/api/produto/busca', (req, res) => {
+    const termo = req.query.q;
+    const sql = "SELECT * FROM produto WHERE nome LIKE ?";
+    db.all(sql, [`%${termo}%`], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
     });
 });
 // CRIAR

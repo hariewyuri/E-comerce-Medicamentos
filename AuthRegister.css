@@ -5,12 +5,21 @@ body {
     padding: 0;
     display: flex;
     overflow: hidden;
+    justify-content: right;
 }
+
+img {
+    background-size: cover;
+    background-position: left;
+    background-repeat: no-repeat;
+    height: 200vh;
+    filter: blur(1px) brightness(60%);
+}
+
 p {
     text-align: center;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
     font-size: 30px;
     text-align: center;
     padding-left: 5%;
@@ -27,16 +36,72 @@ h1 {
     border-radius: 15px;
     padding-top: 20px;
     padding-bottom: 20px;
-
 }
-.auth-container{
+
+h2 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-size: 2.5vi;
+    color: #c20e1a;
+}
+
+span {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 0.7vw;
+    text-align: center;
+    margin-top: 1vh;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 800;
+    color: #c20e1a;
+}
+
+.auth-container {
     position: absolute;
     z-index: 1;
+    background-color: white;
+    height: 100vh;
+    width: 23vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    gap: 1vh;
 }
+
 .banner-auth {
     position: absolute;
     z-index: 0;
 }
+
 .banner-auth img {
     height: 100vh;
+}
+
+.auth-container>button {
+    background-color: #cc0000;
+    color: white;
+    border: none;
+    border-radius: 10vi;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 0.7vi;
+    height: 4vh;
+    margin-top: 4vh;
+}
+
+.auth-container>input {
+    border: 1px solid #ccc;
+    border-radius: 10vi;
+    outline: none;
+    font-size: 1.5vh;
+    min-width: 150px;
+    padding-left: 20px;
+    height: 4vh;
 }
