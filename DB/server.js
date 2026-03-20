@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const verificarToken = require('./middleware/authMiddleware');
 const SECRET_KEY = process.env.SECRET_KEY;
 const app = express();
 const port = process.env.PORT;
@@ -72,6 +73,18 @@ app.get('/api/produto/busca', (req, res) => {
         res.json(rows);
     });
 });
+
+app.post('/api/pedidos', verificarToken, (req, res) => {
+    // Se o código chegou aqui, o verificarToken deu 'next()'
+    const idUsuarioLogado = req.usuarioId;
+    const { itens, valorTotal } = req.body;
+
+    console.log(`Usuário ${idUsuarioLogado} está tentando finalizar uma compra de R$ ${valorTotal}`);
+
+    // Aqui entrará a lógica de INSERT no SQLite (próximo passo)
+    res.status(200).json({ message: "Token validado! Processando pedido..." });
+});
+
 // CRIAR
 // app.post('/api/medicamentos', (req, res) => {
 //     const { nome, fabricante, valor, forma_uso } = req.body;

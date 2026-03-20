@@ -9,73 +9,6 @@ async function carregarDados() {
 
         produto.forEach(item => {
             cardHTML = `
-                <style>
-                @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-                .product_card {
-                    font-family: 'Open Sans', sans-serif;
-                    width: 280px;
-                    height: 440px;
-                    background: #ffffff;
-                    border-radius: 4px;
-                    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-                    padding: 16px;
-                    box-sizing: border-box;
-                    display: flex;
-                    flex-direction: column;
-                }
-                .product_image {
-                    width: 100%;
-                    height: 180px;
-                    object-fit: contain;
-                    margin-bottom: 16px;
-                }
-                .product_title {
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #3f4a59;
-                    line-height: 1.4;
-                    margin: 0 0 8px 0;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-                .price_main-row {
-                    display: flex;
-                    align-items: center;
-                }
-
-                .current_price {
-                    font-size: 22px;
-                    font-weight: 900;
-                    color: #ff6500;
-                }
-                .payment_method {
-                    font-size: 13px;
-                    color: #7f858d;
-                    line-height: 1.5;
-                }
-                .buy-button {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-top: 30px;
-                    margin-bottom: 15px;
-                    height: 35px;
-                    gap: 8px;
-                    background-color: #ff6500;
-                    color: #fff;
-                    border: none;
-                    font-size: 14px;
-                    font-weight: 700;
-                    cursor: pointer;
-                }
-
-                .buy-button-icon-svg {
-                    fill: #fff;
-                    width: 20px;
-                    height: 20px;
-                }
-            </style>
             <div class="product_card">
                 <img class="product_image" src="${item.imagem_url}" alt=""><!-- Inserir caminho da imagem -->
                 <span class="product_title">${item.nome}</span><!-- Colocar a variavel de título -->
@@ -110,7 +43,7 @@ async function buscarProdutos() {
     const termo = inputBusca.value;
 
     try {
-        const response = await fetch(`http://localhost:3000/api/produtos/busca?q=${termo}`);
+        const response = await fetch(`http://localhost:3000/api/produto/busca?q=${termo}`);
         const produtos = await response.json();
 
         const container = document.querySelector('.body_products');
@@ -118,73 +51,6 @@ async function buscarProdutos() {
 
         produtos.forEach(item => {
             cardHTML = `
-                <style>
-                @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-                .product_card {
-                    font-family: 'Open Sans', sans-serif;
-                    width: 280px;
-                    height: 440px;
-                    background: #ffffff;
-                    border-radius: 4px;
-                    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-                    padding: 16px;
-                    box-sizing: border-box;
-                    display: flex;
-                    flex-direction: column;
-                }
-                .product_image {
-                    width: 100%;
-                    height: 180px;
-                    object-fit: contain;
-                    margin-bottom: 16px;
-                }
-                .product_title {
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #3f4a59;
-                    line-height: 1.4;
-                    margin: 0 0 8px 0;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-                .price_main-row {
-                    display: flex;
-                    align-items: center;
-                }
-
-                .current_price {
-                    font-size: 22px;
-                    font-weight: 900;
-                    color: #ff6500;
-                }
-                .payment_method {
-                    font-size: 13px;
-                    color: #7f858d;
-                    line-height: 1.5;
-                }
-                .buy-button {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-top: 30px;
-                    margin-bottom: 15px;
-                    height: 35px;
-                    gap: 8px;
-                    background-color: #ff6500;
-                    color: #fff;
-                    border: none;
-                    font-size: 14px;
-                    font-weight: 700;
-                    cursor: pointer;
-                }
-
-                .buy-button-icon-svg {
-                    fill: #fff;
-                    width: 20px;
-                    height: 20px;
-                }
-            </style>
             <div class="product_card">
                 <img class="product_image" src="${item.imagem_url}" alt=""><!-- Inserir caminho da imagem -->
                 <span class="product_title">${item.nome}</span><!-- Colocar a variavel de título -->
@@ -198,10 +64,10 @@ async function buscarProdutos() {
                     À vista no PIX<br>
                     ou até <strong>10x de R$ 414,90</strong>
                 </div>
-                <button class="buy-button" onclick="adicionarAoCarrinho(${item.id}, '${item.nome}', ${item.valor})">
+                <button class="buy-button" onclick="adicionarAoCarrinho(${item.id}, '${item.nome}', ${item.valor}, '${item.imagem_url}')">
                 <svg class="buy-button-icon-svg" viewBox="0 0 24 24">
                     <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>
-                </svg>    
+                </svg>
                 COMPRAR
                 </button>
                 </div>

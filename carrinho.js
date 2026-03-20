@@ -1,3 +1,9 @@
+const lixeiraSVG = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="trash-icon-svg">
+        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+    </svg>
+`;
+
 function adicionarAoCarrinho(id, nome, preco, imagem) {
     let carrinho = JSON.parse(localStorage.getItem('carrinho_farmacia')) || [];
 
@@ -19,6 +25,8 @@ function adicionarAoCarrinho(id, nome, preco, imagem) {
     atualizarContadorCarrinho();
 }
 
+
+
 function atualizarContadorCarrinho() {
     const carrinho = JSON.parse(localStorage.getItem('carrinho_farmacia')) || [];
     const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
@@ -26,7 +34,6 @@ function atualizarContadorCarrinho() {
 }
 
 document.addEventListener('DOMContentLoaded', renderizarCarrinho);
-
 
 function renderizarCarrinho() {
     // 1. Lê o carrinho do LocalStorage
@@ -49,22 +56,30 @@ function renderizarCarrinho() {
         valorTotalHtml.innerText = "R$ 0,00";
         return;
     }
-
     carrinho.forEach(item => {
         const subtotalItem = item.preco * item.quantidade;
         totalProdutos += subtotalItem;
+        const iconeMenosOuLixeira = item.quantidade === 1
+            ? lixeiraSVG
+            : '-';
 
         const cardHTML = `
             <div class="cart_item_card">
                 <img class="cart_item_image" src="${item.imagem_url}" alt="${item.nome}">
                 
-                <div class="cart_item_info" style="margin-left: 2vw; color: black;">
-                    <span class="product_title"><strong style="font-weight: 400;">${item.nome}<strong></span>
-                    <p class="payment_method" style="text-align: left; font-weight: 300;">Quantidade: ${item.quantidade}</p>
+                <div class="cart_item_info">
+                    <a class="product_title">${item.nome}</a>
+                </div>
+                <div class="controle-quantidade">
+                    <button onclick="alterarQuantidade(${item.id}, 'diminuir')" class="btn-qty">
+                        ${iconeMenosOuLixeira}
+                    </button>
+                    <span class="qty-numero">${item.quantidade}</span>
+                    <button onclick="alterarQuantidade(${item.id}, 'aumentar')" class="btn-qty">+</button>
                 </div>
 
                 <div class="cart_item_price">
-                    R$ ${subtotalItem.toFixed(2)}
+                    R$ ${(item.preco * item.quantidade).toFixed(2)}
                 </div>
             </div>
         `;
@@ -78,3 +93,73 @@ function renderizarCarrinho() {
 }
 
 document.addEventListener('DOMContentLoaded', atualizarContadorCarrinho);
+
+function alterarQuantidade(id, acao) {
+    let carrinho = JSON.parse(localStorage.getItem('carrinho_farmacia')) || [];
+    const index = carrinho.findIndex(item => item.id === id);
+
+    if (index !== -1) {
+        if (acao === 'aumentar') {
+            carrinho[index].quantidade += 1;
+        } else if (acao === 'diminuir') {
+            if (carrinho[index].quantidade > 1) {
+                carrinho[index].quantidade -= 1;
+            } else {
+                // Se a quantidade for 1 e clicar no botão, removemos o item (Ação da Lixeira)
+                carrinho.splice(index, 1);
+            }
+        }
+
+        // Salva e re-renderiza a página para atualizar os valores
+        localStorage.setItem('carrinho_farmacia', JSON.stringify(carrinho));
+        renderizarCarrinho(); // Chama a função que desenha a tela
+        atualizarContadorCarrinho(); // Atualiza o ícone do topo
+    }
+}
+
+async function finalizarPedido() {
+    const token = localStorage.getItem('token_farmacia');
+    const carrinho = JSON.parse(localStorage.getItem('carrinho_farmacia'));
+
+    if (!token) {
+        alert("Você precisa estar logado para finalizar a compra!");
+        window.location.href = 'login.html';
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/pedidos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Enviando o "crachá"
+            },
+            body: JSON.stringify({
+                itens: carrinho,
+                valorTotal: calcularTotalDoCarrinho() // Função que soma os valores
+            })
+        });
+
+        if (response.status === 401 || response.status === 403) {
+            alert("Sua sessão expirou. Faça login novamente.");
+            window.location.href = 'login.html';
+        } else {
+            const data = await response.json();
+            alert(data.message);
+            // Aqui vamos redirecionar para a tela de Nota Fiscal depois
+        }
+    } catch (error) {
+        console.error("Erro ao finalizar:", error);
+    }
+}
+
+function calcularTotalDoCarrinho() {
+    const carrinho = JSON.parse(localStorage.getItem('carrinho_farmacia')) || [];
+    const FRETE_FIXO = 15.00;
+
+    const totalProdutos = carrinho.reduce((acumulador, item) => {
+        return acumulador + (item.preco * item.quantidade);
+    }, 0);
+
+    return totalProdutos + FRETE_FIXO;
+}
