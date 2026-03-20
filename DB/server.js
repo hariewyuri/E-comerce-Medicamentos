@@ -74,40 +74,62 @@ app.get('/api/produto/busca', (req, res) => {
     });
 });
 
-app.post('/api/pedidos', verificarToken, (req, res) => {
-    // Se o código chegou aqui, o verificarToken deu 'next()'
-    const idUsuarioLogado = req.usuarioId;
+app.post('/api/pedido', verificarToken, (req, res) => {
     const { itens, valorTotal } = req.body;
+    const usuarioId = req.usuarioId;
+    const dataPedido = new Date().toLocaleString('pt-BR');
 
-    console.log(`Usuário ${idUsuarioLogado} está tentando finalizar uma compra de R$ ${valorTotal}`);
+    db.serialize(() => {
+        db.run("BEGIN TRANSACTION");
 
-    // Aqui entrará a lógica de INSERT no SQLite (próximo passo)
-    res.status(200).json({ message: "Token validado! Processando pedido..." });
+        const sqlPedido = `INSERT INTO pedido (usuario_id, data_pedido, valor_total) VALUES (?, ?, ?)`;
+
+        db.run(sqlPedido, [usuarioId, dataPedido, valorTotal], function (err) {
+            if (err) {
+                db.run("ROLLBACK");
+                console.error("ERRO AO INSERIR PEDIDO:", err.message);
+                return res.status(500).json({ message: "Erro ao criar pedido" });
+            }
+
+            const pedidoId = this.lastID;
+            const sqlItens = `INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)`;
+
+            let itensProcessados = 0;
+            let houveErro = false;
+
+            // Se o carrinho estiver vazio (segurança extra)
+            if (itens.length === 0) {
+                db.run("COMMIT");
+                return res.status(201).json({ message: "Pedido vazio criado", pedidoId });
+            }
+
+            itens.forEach((item) => {
+                db.run(sqlItens, [pedidoId, item.id, item.quantidade, item.preco], (err) => {
+                    // O console SÓ PODE RODAR se o 'err' existir de verdade!
+                    if (err) {
+                        houveErro = true;
+                        console.error("ERRO AO INSERIR ITEM:", err.message);
+                    }
+
+                    itensProcessados++;
+
+                    if (itensProcessados === itens.length) {
+                        if (houveErro) {
+                            db.run("ROLLBACK");
+                            if (!res.headersSent) return res.status(500).json({ message: "Erro nos itens" });
+                        } else {
+                            db.run("COMMIT");
+                            if (!res.headersSent) return res.status(201).json({
+                                message: "Pedido finalizado com sucesso!",
+                                pedidoId: pedidoId
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    });
 });
-
-// CRIAR
-// app.post('/api/medicamentos', (req, res) => {
-//     const { nome, fabricante, valor, forma_uso } = req.body;
-//     const sql = `INSERT INTO medicamentos (nome, fabricante, valor, forma_uso) VALUES (?, ?, ?, ?)`;
-
-//     db.run(sql, [nome, fabricante, valor, forma_uso], function(err) {
-//         if (err) {
-//             return res.status(400).json({ error: err.message });
-//         }
-//         res.json({ id: this.lastID });
-//     });
-// });
-
-// // DELETAR
-// app.delete('/api/medicamentos/:id', (req, res) => {
-//     const id = req.params.id;
-//     db.run(`DELETE FROM medicamentos WHERE id = ?`, id, function(err) {
-//         if (err) {
-//             return res.status(400).json({ error: err.message });
-//         }
-//         res.json({ message: "Removido com sucesso", rows: this.changes });
-//     });
-// });
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);

@@ -45,7 +45,7 @@ function renderizarCarrinho() {
     const valorProdutosHtml = document.getElementById('valor-produtos-resumo');
     const valorTotalHtml = document.getElementById('valor-total-resumo');
 
-    container.innerHTML = ""; // Limpa antes de renderizar
+    container.innerHTML = "";
 
     let totalProdutos = 0;
     const FRETE_FIXO = 15.00; // Simulação de frete
@@ -121,35 +121,43 @@ async function finalizarPedido() {
     const token = localStorage.getItem('token_farmacia');
     const carrinho = JSON.parse(localStorage.getItem('carrinho_farmacia'));
 
-    if (!token) {
+    // O ESCUDO FRONTAL: Barra nulo de verdade e "nulo" em texto
+    if (!token || token === 'null' || token === 'undefined' || token === '') {
         alert("Você precisa estar logado para finalizar a compra!");
+        // Redireciona para o login e para a execução da função aqui (return)
         window.location.href = 'login.html';
-        return;
+        return; 
     }
 
+    if (!carrinho || carrinho.length === 0) {
+        alert("Seu carrinho está vazio!");
+        return;
+    }
     try {
-        const response = await fetch('http://localhost:3000/api/pedidos', {
+        const response = await fetch('http://localhost:3000/api/pedido', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Enviando o "crachá"
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                itens: carrinho,
-                valorTotal: calcularTotalDoCarrinho() // Função que soma os valores
+                itens: carrinho, // Enviamos a lista para o servidor conferir
+                valorTotal: calcularTotalDoCarrinho()
             })
         });
 
-        if (response.status === 401 || response.status === 403) {
-            alert("Sua sessão expirou. Faça login novamente.");
-            window.location.href = 'login.html';
-        } else {
-            const data = await response.json();
-            alert(data.message);
-            // Aqui vamos redirecionar para a tela de Nota Fiscal depois
+        if (response.ok) {
+            const resultado = await response.json();
+            alert("Pedido #" + resultado.pedidoId + " confirmado!");
+
+            // 1. Limpa o carrinho para a próxima compra
+            localStorage.removeItem('carrinho_farmacia');
+
+            // 2. Redireciona para a página de sucesso ou nota fiscal
+            window.location.href = `sucesso.html?id=${resultado.pedidoId}`;
         }
     } catch (error) {
-        console.error("Erro ao finalizar:", error);
+        console.error("Erro ao enviar pedido:", error);
     }
 }
 

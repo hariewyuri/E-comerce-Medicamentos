@@ -18,7 +18,7 @@ async function auth(event) {
             localStorage.setItem('token_farmacia', data.token);
             localStorage.setItem('nome_usuario', data.nomeUsuario);
             alert("Login bem-sucedido!");
-            window.location.href = 'Index.html'
+            window.location.href = 'Index.html';
         } else {
             alert("Falha no login: " + (data.message || "Credenciais inválidas"));
         }
