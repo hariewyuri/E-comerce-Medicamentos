@@ -18,6 +18,7 @@ a {
     font-size: 0.8vi;
     color: #c20e1a;
 }
+
 span {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
@@ -95,7 +96,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10vw;
+    gap: 6vw;
 
 }
 
@@ -109,4 +110,36 @@ button:hover {
     justify-content: center;
     gap: 2em;
     margin: 50px;
+}
+
+.cart-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-cart-icon {
+    width: 5vw;
+    height: 5vh;
+    fill: #ff6500;
+    transition: transform 0.2s;
+}
+
+.nav-cart-icon:hover {
+    transform: scale(1.1);
+}
+
+#cart-count {
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    background-color: #cc0000;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+    min-width: 15px;
+    text-align: center;
+    border: 2px solid #fff;
 }
