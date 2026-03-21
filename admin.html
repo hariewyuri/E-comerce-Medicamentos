@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Admin - Adicionar Produto</title>
+    <style>
+        body {
+            background-color: #c20e1a;
+        }
+        .admin-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #3f4a59;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn-salvar {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .btn-salvar:hover {
+            background: #218838;
+        }
+
+        .voltar-loja {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #ff6500;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .btn-deletar {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-deletar:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-container">
+        <h2>💊 Cadastrar Novo Remédio</h2>
+
+        <form id="form-add-produto">
+            <div class="form-group">
+                <label for="nome-produto">Nome do Remédio / Descrição:</label>
+                <input type="text" id="nome-produto" placeholder="Ex: Dipirona 500mg" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nome-fabricante">Fabricante</label>
+                <input type="text" id="nome-fabricante" placeholder="Ex: Dorflex" required>
+            </div>
+
+            <div class="form-group">
+                <label for="valor-produto">Valor (R$):</label>
+                <input type="number" id="valor-produto" step="0.01" placeholder="Ex: 12.50" required>
+            </div>
+
+            <div class="form-group">
+                <label for="imagem-produto">URL da Imagem:</label>
+                <input type="url" id="imagem-produto" placeholder="Cole o link da imagem (ex: https://...)" required>
+            </div>
+
+            <button type="submit" class="btn-salvar">Salvar no Banco de Dados</button>
+        </form>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+        <h3>🗑️ Gerenciar Produtos</h3>
+        <div id="lista-admin-produtos">
+            <p>Carregando produtos...</p>
+        </div>
+
+        <a href="index.html" class="voltar-loja">⬅ Voltar para a Loja</a>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>

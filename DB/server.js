@@ -177,6 +177,51 @@ app.get('/api/meus-pedidos', verificarToken, (req, res) => {
     });
 });
 
+//CRUD
+//C
+app.post('/api/produto', (req, res) => {
+    const { nome, valor, imagem_url } = req.body;
+
+    if (!nome || !valor || !imagem_url) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios!" });
+    }
+
+    const sql = `INSERT INTO produto (nome, valor, imagem_url, fabricante) VALUES (?, ?, ?, ?)`;
+
+    db.run(sql, [nome, valor, imagem_url], function(err) {
+        if (err) {
+            console.error("Erro ao inserir produto:", err.message);
+            return res.status(500).json({ message: "Erro ao salvar no banco de dados." });
+        }
+        
+        res.status(201).json({ 
+            message: "Remédio cadastrado com sucesso!", 
+            produtoId: this.lastID 
+        });
+    });
+});
+
+//D
+app.delete('/api/produto/:id', (req, res) => {
+    const produtoId = req.params.id;
+
+    const sql = `DELETE FROM produto WHERE id = ?`;
+
+    db.run(sql, [produtoId], function(err) {
+        if (err) {
+            console.error("Erro ao deletar:", err.message);
+            return res.status(500).json({ message: "Erro ao apagar do banco de dados." });
+        }
+        
+        // this.changes mostra quantas linhas foram afetadas. Se for 0, o ID não existia.
+        if (this.changes === 0) {
+            return res.status(404).json({ message: "Produto não encontrado." });
+        }
+
+        res.status(200).json({ message: "Produto excluído com sucesso!" });
+    });
+});
+
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
