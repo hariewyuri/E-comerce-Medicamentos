@@ -25,9 +25,18 @@
                 <span id="cart-count">0</span>
             </a>
         </div>
-        <div id="user-area">
-            <a href="login.html" style="color: #cc0000;"><strong>Faça login</strong></a><br><span>ou </span><a
-                href="Register.html" style="color: #cc0000;"><strong>cadastre-se</strong></a>
+        <div class="user-menu-container" id="container-usuario">
+            <button class="btn-usuario" id="btn-usuario">
+                Entrar / Cadastrar
+            </button>
+
+            <div class="dropdown-content" id="dropdown-usuario">
+                <a style="margin-left: 0" href="conta.html">👤 Conta</a>
+                <a style="margin-left: 0" href="meus_pedidos.html">📦 Meus pedidos</a>
+                <a style="margin-left: 0" href="enderecos.html">📍 Endereços</a>
+                <hr>
+                <a style="margin-left: 0" href="#" onclick="fazerLogout()">🚪 Sair</a>
+            </div>
         </div>
     </header>
     <style>

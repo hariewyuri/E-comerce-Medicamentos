@@ -128,3 +128,67 @@ button:hover {
     text-align: center;
     border: 2px solid #fff;
 }
+
+/* Container que segura tudo */
+.user-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* O botão do usuário */
+.btn-usuario {
+    background: none;
+    border: none;
+    color: #333;
+    /* Ajuste para a cor do seu cabeçalho */
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+}
+
+/* A caixa da lista (Escondida por padrão) */
+.dropdown-content {
+    display: none;
+    /* Mantém invisível */
+    position: absolute;
+    right: 0;
+    /* Alinha a lista pela direita do botão */
+    background-color: #ffffff;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    /* Sombra elegante */
+    border-radius: 4px;
+    z-index: 1000;
+    /* Garante que fique por cima de banners e produtos */
+    overflow: hidden;
+}
+
+/* Os links dentro da lista */
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+/* Efeito ao passar o mouse nas opções */
+.dropdown-content a:hover {
+    background-color: #f3f5f7;
+    color: #ff6500;
+    /* Cor de destaque */
+}
+
+/* A linha divisória (hr) */
+.dropdown-content hr {
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    margin: 0;
+}
+
+/* A MÁGICA: Quando o mouse passa no container, a lista aparece! */
+.user-menu-container:hover .dropdown-content {
+    display: block;
+}

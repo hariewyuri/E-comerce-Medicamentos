@@ -131,6 +131,52 @@ app.post('/api/pedido', verificarToken, (req, res) => {
     });
 });
 
+app.get('/api/pedido/:id', verificarToken, (req, res) => {
+    const pedidoId = req.params.id;
+    const usuarioId = req.usuarioId; // Segurança: Garante que o usuário só veja o próprio pedido
+
+    // 1. Busca o cabeçalho do pedido
+    db.get(`SELECT * FROM pedido WHERE id = ? AND usuario_id = ?`, [pedidoId, usuarioId], (err, pedido) => {
+        if (err) return res.status(500).json({ message: "Erro no banco de dados" });
+        if (!pedido) return res.status(404).json({ message: "Pedido não encontrado ou acesso negado." });
+
+        // 2. Busca os itens fazendo um JOIN com a tabela de produtos para pegar o nome
+        const sqlItens = `
+            SELECT p.nome, ip.quantidade, ip.preco_unitario 
+            FROM itens_pedido ip
+            JOIN produto p ON ip.produto_id = p.id
+            WHERE ip.pedido_id = ?
+        `;
+
+        db.all(sqlItens, [pedidoId], (err, itens) => {
+            if (err) return res.status(500).json({ message: "Erro ao buscar itens do pedido" });
+            
+            // Devolve o pacote completo (Pedido + Itens)
+            res.status(200).json({
+                pedido: pedido,
+                itens: itens
+            });
+        });
+    });
+});
+
+app.get('/api/meus-pedidos', verificarToken, (req, res) => {
+    const usuarioId = req.usuarioId; // O crachá dedurou quem é o usuário!
+
+    // Buscamos apenas os pedidos deste usuário, ordenados do mais novo para o mais velho (DESC)
+    const sql = `SELECT * FROM pedido WHERE usuario_id = ? ORDER BY id DESC`;
+
+    db.all(sql, [usuarioId], (err, pedidos) => {
+        if (err) {
+            console.error("Erro ao buscar histórico:", err.message);
+            return res.status(500).json({ message: "Erro ao buscar seus pedidos." });
+        }
+        
+        // Devolvemos a lista (array) de pedidos para o front-end
+        res.status(200).json(pedidos);
+    });
+});
+
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });

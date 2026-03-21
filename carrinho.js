@@ -148,13 +148,12 @@ async function finalizarPedido() {
 
         if (response.ok) {
             const resultado = await response.json();
-            alert("Pedido #" + resultado.pedidoId + " confirmado!");
-
-            // 1. Limpa o carrinho para a próxima compra
+            //alert("Pedido #" + resultado.pedidoId + " confirmado!");
             localStorage.removeItem('carrinho_farmacia');
-
-            // 2. Redireciona para a página de sucesso ou nota fiscal
-            window.location.href = `sucesso.html?id=${resultado.pedidoId}`;
+            window.location.href = `sucesso.html?id=${resultado.pedidoId}`
+        } else {
+            const erroResposta = await response.json();
+            alert("Falha ao finalizar: " + (erroResposta.message || "Erro desconhecido"));
         }
     } catch (error) {
         console.error("Erro ao enviar pedido:", error);

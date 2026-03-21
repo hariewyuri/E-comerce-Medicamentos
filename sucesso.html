@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pedido Confirmado</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #f3f5f7;
+            padding: 40px;
+        }
+
+        .nota-fiscal {
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cabecalho-nf {
+            text-align: center;
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cabecalho-nf h1 {
+            color: #28a745;
+            margin: 0 0 10px 0;
+        }
+
+        .item-linha {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .total-linha {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6500;
+            margin-top: 20px;
+        }
+
+        .botoes-acao {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .btn-imprimir {
+            background: #3f4a59;
+            color: white;
+        }
+
+        .btn-voltar {
+            background: #ff6500;
+        }
+
+        .btn-voltar>a {
+            text-decoration: none;
+            color: white;
+        }
+
+        @media print {
+            @page {
+                margin: 15mm; 
+            }
+body { 
+                background: white; 
+                padding: 0; 
+                margin: 0; 
+                color: black; /* Força o texto a ficar bem nítido na impressão */
+            }
+
+            .nota-fiscal { 
+                box-shadow: none; 
+                border: none; 
+                width: 100%; 
+                max-width: 100%; 
+                padding: 0; 
+            }
+
+            .botoes-acao { 
+                display: none !important; 
+            }
+
+            /* 2. Força a linha a não quebrar no meio de duas páginas */
+            .item-linha, .total-linha {
+                display: flex !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+                page-break-inside: avoid !important;
+            }
+
+            /* 3. O lado do NOME DO PRODUTO (Esquerda) */
+            .item-linha span:first-child,
+            .total-linha span:first-child {
+                flex: 1 !important; 
+                padding-right: 20px !important;
+                /* Se o nome for gigantesco, ele quebra o nome, mas não empurra o preço */
+                word-wrap: break-word !important; 
+            }
+
+            /* 4. O lado do PREÇO (Direita) - A CORREÇÃO AQUI */
+            .item-linha span:last-child,
+            .total-linha span:last-child {
+                flex-shrink: 0 !important; /* PROÍBE O NAVEGADOR DE ENCOLHER ESTA CAIXA */
+                width: max-content !important; /* Exige exatamente o espaço que o texto precisa */
+                min-width: 100px !important;
+                white-space: nowrap !important;
+                text-align: right !important;
+            }
+        }
+    </style>
+    <script src="sucesso.js" defer></script>
+</head>
+
+<body>
+
+    <div class="nota-fiscal" id="comprovante">
+        <div class="cabecalho-nf">
+            <h1>✅ Pedido Confirmado!</h1>
+            <p>Obrigado por comprar conosco.</p>
+            <p><strong>Pedido Nº:</strong> <span id="num-pedido">Carregando...</span></p>
+            <p><strong>Data:</strong> <span id="data-pedido">Carregando...</span></p>
+        </div>
+
+        <h3>Itens do Pedido:</h3>
+        <div id="lista-itens">
+        </div>
+
+        <div class="total-linha">
+            <span>TOTAL PAGO:</span>
+            <span id="valor-total">R$ 0,00</span>
+        </div>
+
+        <div class="botoes-acao">
+            <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir Comprovante</button>
+            <button class="btn-voltar"><a href="index.html">Voltar para a Loja</a></button>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Pedidos</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .pedidos-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            font-family: 'Open Sans', sans-serif;
+            background-color: white;
+            border-radius: 1vi;
+        }
+
+        .pedido-card {
+            background: #fff;
+            border: 1px solid #e2e5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .pedido-info h3 {
+            margin: 0 0 10px 0;
+            color: #3f4a59;
+        }
+
+        .pedido-info p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+            text-align: left;
+            padding-left: 0;
+            padding-right: 0;
+            font-weight: 400;
+        }
+
+        .pedido-status {
+            background: #e6f4ea;
+            color: #1e8e3e;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .btn-ver-recibo {
+            background: #ff6500;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-ver-recibo:hover {
+            background: #e55b00;
+        }
+
+        .mensagem-vazio {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="head">
+        <img class="logo" src="https://images.tcdn.com.br/img/img_prod/1215546/1733595659_logo_ultra_prancheta_1.png"
+            alt="">
+        <div><input id="inputBusca" type="text" placeholder="Busque produtos"></div>
+        <div class="cart-container">
+            <a href="carrinho.html" class="cart-link">
+                <svg class="nav-cart-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z">
+                    </path>
+                </svg>
+                <span id="cart-count">0</span>
+            </a>
+        </div>
+        <div class="user-menu-container" id="container-usuario">
+            <button class="btn-usuario" id="btn-usuario">
+                Entrar / Cadastrar
+            </button>
+
+            <div class="dropdown-content" id="dropdown-usuario">
+                <a style="margin-left: 0" href="conta.html">👤 Conta</a>
+                <a style="margin-left: 0" href="meus_pedidos.html">📦 Meus pedidos</a>
+                <a style="margin-left: 0" href="enderecos.html">📍 Endereços</a>
+                <hr>
+                <a style="margin-left: 0" href="#" onclick="fazerLogout()">🚪 Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pedidos-container">
+        <h2>📦 Histórico de Compras</h2>
+        <div id="lista-meus-pedidos">
+        </div>
+    </main>
+
+    <script src="meus_pedidos.js"></script>
+</body>
+
+</html>
